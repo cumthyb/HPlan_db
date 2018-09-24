@@ -7,6 +7,7 @@ import parser from 'koa-bodyparser'
 // import dbApis from './routes/dbApis'
 import uptokenApi from './routes/qiniu_token'
 import userapi from './db/schema/user/index.js'
+import seriesapi from './db/schema/series/index.js'
 
 const app = new koa()
 
@@ -37,7 +38,7 @@ const cors_options = {
 // .use(dbApis(Router))
 
 const db_options = {
-    autoIndex: true, // Don't build indexes
+    autoIndex: false, // Don't build indexes
     reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
     reconnectInterval: 500, // Reconnect every 500ms
     poolSize: 10, // Maintain up to 10 socket connections
@@ -64,6 +65,7 @@ connectdb()
             .use(parser())
             .use(uptokenApi(Router))
             .use(userapi(Router, db))
+            .use(seriesapi(Router, db))
         app.listen(3011)
         console.log('====================================')
         console.log('dbServer start service at 127.0.0.1:3011')

@@ -14,15 +14,9 @@ import mongoose from "mongoose"
 
 
 const SeriesSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true,
-        trim: true
-    },
     title: {
         type: String,
+        unique: true,
         required: true,
         trim: true
     },
@@ -41,6 +35,4 @@ const SeriesSchema = new mongoose.Schema({
 })
 
 
-export default function (db) {
-    return db.model('User', SeriesSchema)
-}
+export default SeriesSchema
