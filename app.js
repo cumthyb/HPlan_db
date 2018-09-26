@@ -8,6 +8,7 @@ import parser from 'koa-bodyparser'
 import uptokenApi from './routes/qiniu_token'
 import userapi from './db/schema/user/index.js'
 import seriesapi from './db/schema/series/index.js'
+import courseapi from './db/schema/course/index.js'
 
 const app = new koa()
 
@@ -44,13 +45,17 @@ const db_options = {
     poolSize: 10, // Maintain up to 10 socket connections
     // If not connected, return errors immediately rather than waiting for reconnect
     bufferMaxEntries: 0,
-    useNewUrlParser:true
+    useNewUrlParser: true
 }
 
 function connectdb() {
     return new Promise((resolve, reject) => {
         try {
-            var conn = mongoose.connect( 'mongodb://127.0.0.1:27017/hplan1', {}, db_options )
+            var conn = mongoose.connect(
+                'mongodb://127.0.0.1:27017/hplan1',
+                {},
+                db_options
+            )
             resolve(conn)
         } catch (error) {
             console.error(error)
@@ -66,6 +71,7 @@ connectdb()
             .use(uptokenApi(Router))
             .use(userapi(Router, db))
             .use(seriesapi(Router, db))
+            .use(courseapi(Router, db))
         app.listen(3011)
         console.log('====================================')
         console.log('dbServer start service at 127.0.0.1:3011')

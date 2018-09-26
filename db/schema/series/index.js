@@ -19,9 +19,26 @@ export default function(Router, db) {
             })
             .catch(error => {
                 console.log(error)
-                ctx.body = { code: -1, message: error }
+                ctx.body = { code: -1, message: error.message }
             })
     })
-
+    //注册用户
+    router.get('/course-series/findAll', async (ctx, next) => {
+        await SeriesModel.find()
+            .then(data => {
+                let arr = []
+                data.map(item => {
+                    arr.push({
+                        value: item._id,
+                        label: item.title
+                    })
+                })
+                ctx.body = { code: 1, data: arr, message: '新建成功' }
+            })
+            .catch(error => {
+                console.log(error)
+                ctx.body = { code: -1, message: error.message }
+            })
+    })
     return router.routes()
 }

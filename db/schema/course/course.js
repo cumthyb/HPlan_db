@@ -14,13 +14,6 @@ import mongoose from "mongoose"
 
 
 const CourseSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true,
-        trim: true
-    },
     series: {
         type: String,
         required: true,
@@ -53,12 +46,10 @@ const CourseSchema = new mongoose.Schema({
         required: true
     },
     price: {
-        type: Number,
-        required: true
+        type: Number
     },
     discount: {
         type: Number,
-        required: true
     },
     ctime: {
         type: Date,
@@ -70,6 +61,4 @@ const CourseSchema = new mongoose.Schema({
 })
 
 
-export default function (db) {
-    return db.model('User', CourseSchema)
-}
+export default  CourseSchema
