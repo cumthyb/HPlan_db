@@ -1,13 +1,18 @@
-import UserSchema from "./user.js";
-import jwt from "jsonwebtoken";
+import UserSchema from './user.js'
+import jwt from 'jsonwebtoken'
 
-//  const login=async ctx => {}
 
-export default function(db) {
-    const UserModel = db.model("User", UserSchema(db.Schema));
+export default function (Router,db) {
 
-    const register = async ctx => {
-        const { name, pwd, email, tel, alias, avatar, qq } = ctx.request.body;
+    var UserModel = db.model('User', UserSchema)
+
+    // initCon(db)
+    const router = new Router({
+        prefix: '/api'
+    })
+    //注册用户
+    router.post('/member/register', async (ctx, next) => {
+        const { name, pwd, email, tel, alias, avatar, qq } = ctx.request.body
         const user = {
             name,
             alias,
@@ -16,105 +21,107 @@ export default function(db) {
             tel,
             qq,
             avatar
-        };
+        }
         await UserModel(user)
             .save()
             .then(data => {
-                ctx.body = { code: 1, message: "注册成功" };
+                ctx.body = { code: 1, message: '注册成功' }
             })
             .catch(error => {
-                console.log(error);
-                ctx.body = { code: -1, message: "注册失败" };
-            });
-    };
+                console.log(error)
+                ctx.body = { code: -1, message: '注册失败' }
+            })
+    })
 
-    const login = async ctx => {
-        const { name, pwd } = ctx.request.body;
+    //用户登陆
+    router.post('/member/login', async (ctx, next) => {
+        const { name, pwd } = ctx.request.body
         const user = await UserModel.findOne({
             name
-        });
+        })
         if (!user) {
             ctx.body = {
                 code: -1,
-                message: "用户不存在"
-            };
+                message: '用户不存在'
+            }
         } else {
             if (user.pwd !== pwd) {
                 ctx.body = {
                     code: -1,
-                    message: "密码错误"
-                };
+                    message: '密码错误'
+                }
             } else {
                 const token = jwt.sign(
                     {
                         name: user.name
                     },
-                    "secret",
+                    'secret',
                     {
                         expiresIn: 60 * 60 // token到期时间设置
                     }
-                );
-                user.token = token;
-                await user.save();
+                )
+                user.token = token
+                await user.save()
                 ctx.body = {
                     code: 1,
-                    message: "登陆验证成功",
+                    message: '登陆验证成功',
                     data: { name, alias: user.alias, token }
-                };
+                }
             }
         }
-    };
+    })
 
-    const valid = async ctx => {
-        const { name, token } = ctx.request.body;
+    //token 验证
+    router.post('/valid', async (ctx, next) => {
+        const { name, token } = ctx.request.body
         try {
-            const decoded = jwt.verify(token, "secret");
+            const decoded = jwt.verify(token, 'secret')
             if (decoded.exp <= Date.now() / 1000) {
                 ctx.body = {
                     code: 0,
-                    message: "登录状态已过期，请重新登录"
-                };
-                return;
+                    message: '登录状态已过期，请重新登录'
+                }
+                return
             }
             if (decoded) {
                 // token is ok
                 ctx.body = {
                     code: 1,
-                    message: "登陆验证成功"
-                };
-                return;
+                    message: '登陆验证成功'
+                }
+                return
             }
         } catch (error) {
             if (error) {
                 ctx.body = {
                     code: -1,
                     message: error.message
-                };
+                }
             }
         }
-    };
-
-    const userInfo = async ctx => {
-        const { name } = ctx.request.body;
+    })
+    //用户信息
+    router.post('/member/info', async (ctx, next) => {
+        const { name } = ctx.request.body
         const user = await UserModel.findOne({
             name
-        });
+        })
         if (!user) {
             ctx.body = {
                 code: -1,
-                message: "用户不存在"
-            };
+                message: '用户不存在'
+            }
         } else {
-            let { name, alisename, pwd, email, tel, avatar, qq } = user;
+            let { name, alisename, pwd, email, tel, avatar, qq } = user
             ctx.body = {
                 code: 1,
-                message: "登陆验证成功",
+                message: '登陆验证成功',
                 data: { name, alisename, pwd, email, tel, avatar, qq }
-            };
+            }
         }
-    };
-
-    const userUpdate = async ctx => {
+    })
+    //用户修改
+    router.post('/member/update', async (ctx, next) => {
         const {
             name,
             alisename,
@@ -123,8 +130,8 @@ export default function(db) {
             tel,
             avatar,
             qq
-        } = ctx.request.body;
-        const user = { name, alisename, pwd, email, tel, avatar, qq };
+        } = ctx.request.body
+        const user = { name, alisename, pwd, email, tel, avatar, qq }
         await UserModel.findOneAndUpdate(
             {
                 name: name
@@ -134,20 +141,21 @@ export default function(db) {
             .then(data => {
                 ctx.body = {
                     code: 1,
-                    message: "修改用户成功"
-                };
+                    message: '修改用户成功'
+                }
             })
             .catch(error => {
-                console.log(error);
+                console.log(error)
                 ctx.body = {
                     code: -1,
                     message: error.message
-                };
-            });
-    };
+                }
+            })
+    })
 
-    const userDelete = async ctx => {
-        const { name } = ctx.request.body;
+    //用户删除
+    router.post('/delete', async (ctx, next) => {
+        const { name } = ctx.request.body
         await UserModel.findOneAndRemove({
             name: name
         })
@@ -155,24 +163,24 @@ export default function(db) {
                 if (data) {
                     ctx.body = {
                         code: 1,
-                        message: data.name + "用户删除成功"
-                    };
+                        message: data.name + '用户删除成功'
+                    }
                 } else {
-                    console.log(data);
+                    console.log(data)
                     ctx.body = {
                         code: -1,
-                        message: name + "用户不存在"
-                    };
+                        message: name + '用户不存在'
+                    }
                 }
             })
             .catch(error => {
-                console.log(error);
+                console.log(error)
                 ctx.body = {
                     code: -1,
                     message: error.message
-                };
-            });
-    };
+                }
+            })
+    })
 
-    return { register, login, valid, userInfo, userUpdate, userDelete };
+    return router.routes()
 }

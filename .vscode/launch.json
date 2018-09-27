@@ -7,8 +7,11 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Node",
-            "program": "${workspaceFolder}\\index.js"
+            "name": "Node调试",
+            "program": "${workspaceFolder}/index.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
         }
     ]
 }
