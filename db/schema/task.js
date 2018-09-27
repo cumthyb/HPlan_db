@@ -1,4 +1,5 @@
-const Schema = require('../config/db.conf')
+import mongoose from 'mongoose'
+
 
 /**
  * 用户模型
@@ -11,7 +12,7 @@ const Schema = require('../config/db.conf')
  * @param {String} tel 电话
  * */
 
-const TaskSchema = new Schema({
+const TaskSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true,
@@ -39,4 +40,4 @@ const TaskSchema = new Schema({
     }
 })
 
-module.exports = TaskSchema
+export default TaskSchema

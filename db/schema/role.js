@@ -1,4 +1,5 @@
-const Schema = require('../config/db.conf')
+import mongoose from 'mongoose'
+
 
 /**
  * 用户模型
@@ -11,7 +12,7 @@ const Schema = require('../config/db.conf')
  * @param {String} tel 电话
  * */
 
-const RoleSchema = new Schema({
+const RoleSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -26,4 +27,4 @@ const RoleSchema = new Schema({
     }
 })
 
-module.exports = RoleSchema
+export default RoleSchema

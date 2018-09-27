@@ -2,8 +2,8 @@ import mongoose from 'mongoose'
 import koa from 'koa'
 import cors from 'koa2-cors'
 import parser from 'koa-bodyparser'
-import dbConf from './db/config/db2.conf'
-import serverConf from './db/config/server.conf'
+import dbConf from './config/db2.conf'
+import serverConf from './config/server.conf'
 import router from './db/router/index.js'
 
 mongoose.set('useCreateIndex', true)
@@ -16,7 +16,8 @@ mongoose
 
         new Promise((reslove, reject) => {
             const app = new koa()
-            app.use(cors(serverConf.cors_options))
+          
+            app.use(cors(serverConf))
                 .use(parser())
                 .use(router(db).routes())
             app.listen(3011)

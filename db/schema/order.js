@@ -1,4 +1,5 @@
-const Schema = require('../config/db.conf')
+import mongoose from 'mongoose'
+
 
 /**
  * 用户模型
@@ -11,7 +12,7 @@ const Schema = require('../config/db.conf')
  * @param {String} tel 电话
  * */
 
-const OrderSchema = new Schema({
+const OrderSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true,
@@ -44,4 +45,4 @@ const OrderSchema = new Schema({
     }
 })
 
-module.exports = OrderSchema
+export default OrderSchema

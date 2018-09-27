@@ -1,4 +1,5 @@
-const Schema = require('../config/db.conf')
+import mongoose from 'mongoose'
+
 
 /**
  * 用户模型
@@ -11,7 +12,7 @@ const Schema = require('../config/db.conf')
  * @param {String} tel 电话
  * */
 
-const CommentSchema = new Schema({
+const CommentSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true,
@@ -48,4 +49,4 @@ const CommentSchema = new Schema({
     }
 })
 
-module.exports = CommentSchema
+export default CommentSchema

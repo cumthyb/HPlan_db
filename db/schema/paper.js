@@ -1,4 +1,5 @@
-const Schema = require('../config/db.conf')
+import mongoose from 'mongoose'
+
 
 /**
  * 用户模型
@@ -11,7 +12,7 @@ const Schema = require('../config/db.conf')
  * @param {String} tel 电话
  * */
 
-const PaperSchema = new Schema({
+const PaperSchema = new mongoose.Schema({
     id: {
         type: String,
         required: true,
@@ -54,4 +55,4 @@ const PaperSchema = new Schema({
     }
 })
 
-module.exports = PaperSchema
+export default PaperSchema

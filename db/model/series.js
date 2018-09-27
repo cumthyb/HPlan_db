@@ -1,15 +1,11 @@
-import SeriesSchema from './series.js'
-import jwt from 'jsonwebtoken'
+import SeriesSchema from '../schema/series.js'
 
-export default function(Router, db) {
+//  const login=async ctx => {}
+
+export default function(db) {
     var SeriesModel = db.model('Series', SeriesSchema)
 
-    // initCon(db)
-    const router = new Router({
-        prefix: '/api'
-    })
-    //注册用户
-    router.post('/course-series/creat', async (ctx, next) => {
+    const createSeries = async ctx => {
         const { title, desc } = ctx.request.body
         const series = { title, desc }
         await SeriesModel(series)
@@ -18,12 +14,12 @@ export default function(Router, db) {
                 ctx.body = { code: 1, message: '新建成功' }
             })
             .catch(error => {
-                console.log(error)
+                console.error(error)
                 ctx.body = { code: -1, message: error.message }
             })
-    })
-    //注册用户
-    router.get('/course-series/findAll', async (ctx, next) => {
+    }
+
+    const getAllSeries = async ctx => {
         await SeriesModel.find()
             .then(data => {
                 let arr = []
@@ -33,12 +29,12 @@ export default function(Router, db) {
                         label: item.title
                     })
                 })
-                ctx.body = { code: 1, data: arr, message: '新建成功' }
+                ctx.body = { code: 1, data: arr, message: 'ok' }
             })
             .catch(error => {
-                console.log(error)
+                console.error(error)
                 ctx.body = { code: -1, message: error.message }
             })
-    })
-    return router.routes()
+    }
+    return { createSeries, getAllSeries }
 }

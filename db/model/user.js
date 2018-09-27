@@ -1,12 +1,12 @@
-import mongoose from 'mongoose'
 import UserSchema from "../schema/user.js";
 import jwt from "jsonwebtoken";
+import SendEmail from '../../utils/email.js'
 
 //  const login=async ctx => {}
 
 export default function(db) {
 
-    const UserModel = db.model('User', UserSchema(mongoose.Schema))
+    const UserModel = db.model('User', UserSchema)
 
     const register = async ctx => {
         const { name, pwd, email, tel, alias, avatar, qq } = ctx.request.body;
@@ -22,10 +22,12 @@ export default function(db) {
         await UserModel(user)
             .save()
             .then(data => {
-                ctx.body = { code: 1, message: "注册成功" };
+                ctx.body = { code: 1, message: "ok" };
+            }).then(()=>{
+                SendEmail('用户注册:'+user.alias,JSON.stringify(user) )
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
                 ctx.body = { code: -1, message: "注册失败" };
             });
     };
@@ -88,6 +90,7 @@ export default function(db) {
             }
         } catch (error) {
             if (error) {
+                console.error(error)
                 ctx.body = {
                     code: -1,
                     message: error.message
@@ -140,7 +143,7 @@ export default function(db) {
                 };
             })
             .catch(error => {
-                console.log(error);
+                console.error(error)
                 ctx.body = {
                     code: -1,
                     message: error.message

@@ -1,4 +1,4 @@
-const Schema = require('../config/db.conf')
+import mongoose from 'mongoose'
 
 /**
  * 用户模型
@@ -11,7 +11,7 @@ const Schema = require('../config/db.conf')
  * @param {String} tel 电话
  * */
 
-const SeriesSchema = new Schema({
+const SeriesSchema = new mongoose.Schema({
     title: {
         type: String,
         unique: true,
@@ -32,4 +32,4 @@ const SeriesSchema = new Schema({
     }
 })
 
-module.exports = SeriesSchema
+export default SeriesSchema

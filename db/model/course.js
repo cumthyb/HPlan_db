@@ -1,27 +1,41 @@
-import CourseSchema from './course.js'
+import CourseSchema from '../schema/course.js'
 
-export default function (Router, db) {
+//  const login=async ctx => {}
+
+export default function(db) {
     var CourseModel = db.model('Course', CourseSchema)
 
-    // initCon(db)
-    const router = new Router({
-        prefix: '/api'
-    })
-    //注册用户
-    router.post('/course/create', async (ctx, next) => {
-        const { series,title, desc, coverimg, videourl, audiourl, publish } = ctx.request.body
-        const course = { series,title, desc, coverimg, videourl, audiourl, publish }
+    const createCourse = async ctx => {
+        const {
+            series,
+            title,
+            desc,
+            coverimg,
+            videourl,
+            audiourl,
+            publish
+        } = ctx.request.body
+        const course = {
+            series,
+            title,
+            desc,
+            coverimg,
+            videourl,
+            audiourl,
+            publish
+        }
         await CourseModel(course)
             .save()
             .then(data => {
                 ctx.body = { code: 1, message: 'ok' }
             })
             .catch(error => {
+                console.error(error)
                 ctx.body = { code: -1, message: error.message }
             })
-    })
-    //注册用户
-    router.get('/course/findAll', async (ctx, next) => {
+    }
+
+    const getAllCourse = async ctx => {
         await CourseModel.find()
             .then(data => {
                 let arr = []
@@ -31,8 +45,9 @@ export default function (Router, db) {
                 ctx.body = { code: 1, data: arr, message: 'ok' }
             })
             .catch(error => {
+                console.error(error)
                 ctx.body = { code: -1, message: error.message }
             })
-    })
-    return router.routes()
+    }
+    return { createCourse, getAllCourse }
 }
