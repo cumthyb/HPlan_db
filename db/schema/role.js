@@ -1,5 +1,4 @@
-import mongoose from "mongoose"
-
+const Schema = require('../config/db.conf')
 
 /**
  * 用户模型
@@ -12,27 +11,19 @@ import mongoose from "mongoose"
  * @param {String} tel 电话
  * */
 
-
-const SeriesSchema = new mongoose.Schema({
-    title: {
+const RoleSchema = new Schema({
+    name: {
         type: String,
-        unique: true,
         required: true,
+        index: true,
+        unique: true,
         trim: true
     },
     desc: {
         type: String,
         required: true,
         trim: true
-    },
-    ctime: {
-        type: Date,
-        default: Date.now
-    },
-    utime: {
-        type: Date
     }
 })
 
-
-export default SeriesSchema
+module.exports = RoleSchema

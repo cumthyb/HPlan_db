@@ -1,5 +1,4 @@
-var mongoose = require( "mongoose")
-
+const Schema = require('../config/db.conf')
 
 /**
  * 用户模型
@@ -12,13 +11,11 @@ var mongoose = require( "mongoose")
  * @param {String} tel 电话
  * */
 
-
-const RoleSchema = new mongoose.Schema({
-    name: {
+const SeriesSchema = new Schema({
+    title: {
         type: String,
-        required: true,
-        index: true,
         unique: true,
+        required: true,
         trim: true
     },
     desc: {
@@ -26,10 +23,13 @@ const RoleSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    ctime: {
+        type: Date,
+        default: Date.now
+    },
+    utime: {
+        type: Date
+    }
 })
 
-
-
-export default function (db) {
-    return db.model('User', RoleSchema)
-}
+module.exports = SeriesSchema

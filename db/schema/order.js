@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const Schema = require('../config/db.conf')
 
 /**
  * 用户模型
@@ -11,57 +11,37 @@ import mongoose from 'mongoose'
  * @param {String} tel 电话
  * */
 
-const UserSchema = new mongoose.Schema({
-    name: {
+const OrderSchema = new Schema({
+    id: {
         type: String,
         required: true,
         index: true,
         unique: true,
         trim: true
     },
-    alias: {
+    member: {
         type: String,
         required: true,
         trim: true
     },
-    role: {
-        type: String,
-        default: 'normal'
-    },
-    pwd: {
+    course: {
         type: String,
         required: true,
-        trim: true
-    },
-    token: {
-        type: String,
         trim: true
     },
     ctime: {
         type: Date,
         default: Date.now
     },
-    logintime: {
-        type: Date,
-        default: Date.now
+    paytime: {
+        type: Date
     },
-    tel: {
-        type: String,
-        required: true,
-        trim: true
+    startdate: {
+        type: Date
     },
-    qq: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    email: {
-        type: String,
-        trim: true
-    },
-    avatar: {
-        type: String
+    enddate: {
+        type: Date
     }
 })
 
-export default UserSchema
+module.exports = OrderSchema

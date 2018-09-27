@@ -1,5 +1,4 @@
-import mongoose from "mongoose"
-
+const Schema = require('../config/db.conf')
 
 /**
  * 用户模型
@@ -12,8 +11,7 @@ import mongoose from "mongoose"
  * @param {String} tel 电话
  * */
 
-
-const CommentSchema = new mongoose.Schema({
+const PaperSchema = new Schema({
     id: {
         type: String,
         required: true,
@@ -21,16 +19,12 @@ const CommentSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    course: {
+    task: {
         type: String,
         required: true,
         trim: true
     },
     member: {
-        type: String,
-        trim: true
-    },
-    paper: {
         type: String,
         required: true,
         trim: true
@@ -40,19 +34,24 @@ const CommentSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    rate: {
-        type: Number,
-        required: true
+    submittime: {
+        type: Date,
+        default: Date.now
     },
-    ctime: {
+    corrector: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    comment: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    correcttime: {
         type: Date,
         required: true
     }
 })
 
-
-
-
-export default function (db) {
-    return db.model('User', CommentSchema)
-}
+module.exports = PaperSchema

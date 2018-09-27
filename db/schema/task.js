@@ -1,5 +1,4 @@
-import mongoose from "mongoose"
-
+const Schema = require('../config/db.conf')
 
 /**
  * 用户模型
@@ -12,8 +11,7 @@ import mongoose from "mongoose"
  * @param {String} tel 电话
  * */
 
-
-const OrderSchema = new mongoose.Schema({
+const TaskSchema = new Schema({
     id: {
         type: String,
         required: true,
@@ -21,33 +19,24 @@ const OrderSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    member: {
-        type: String,
-        required: true,
-        trim: true
-    },
     course: {
         type: String,
         required: true,
         trim: true
     },
-    ctime: {
-        type: Date,
-        default: Date.now
+    title: {
+        type: String,
+        required: true,
+        trim: true
     },
-    paytime: {
-        type: Date
+    desc: {
+        type: String,
+        required: true,
+        trim: true
     },
-    startdate: {
-        type: Date
-    },
-    enddate: {
+    utiem: {
         type: Date
     }
 })
 
-
-
-export default function (db) {
-    return db.model('User', OrderSchema)
-}
+module.exports = TaskSchema

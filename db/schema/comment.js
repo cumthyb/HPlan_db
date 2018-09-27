@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+const Schema = require('../config/db.conf')
 
 /**
  * 用户模型
@@ -11,7 +11,7 @@ import mongoose from 'mongoose'
  * @param {String} tel 电话
  * */
 
-const TaskSchema = new mongoose.Schema({
+const CommentSchema = new Schema({
     id: {
         type: String,
         required: true,
@@ -24,22 +24,28 @@ const TaskSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    title: {
+    member: {
+        type: String,
+        trim: true
+    },
+    paper: {
         type: String,
         required: true,
         trim: true
     },
-    desc: {
+    content: {
         type: String,
         required: true,
         trim: true
     },
-    utiem: {
-        type: Date
+    rate: {
+        type: Number,
+        required: true
+    },
+    ctime: {
+        type: Date,
+        required: true
     }
 })
 
-
-export default function (db) {
-    return db.model('User', TaskSchema)
-}
+module.exports = CommentSchema
