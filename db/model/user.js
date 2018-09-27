@@ -1,10 +1,12 @@
-import UserSchema from "./user.js";
+import mongoose from 'mongoose'
+import UserSchema from "../schema/user.js";
 import jwt from "jsonwebtoken";
 
 //  const login=async ctx => {}
 
 export default function(db) {
-    const UserModel = db.model("User", UserSchema(db.Schema));
+
+    const UserModel = db.model('User', UserSchema(mongoose.Schema))
 
     const register = async ctx => {
         const { name, pwd, email, tel, alias, avatar, qq } = ctx.request.body;
