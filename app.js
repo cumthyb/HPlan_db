@@ -11,7 +11,7 @@ mongoose.set('useCreateIndex', true)
 mongoose
     .createConnection(dbConf.url, dbConf.conn_options)
     .then(db => {
-        console.log(db)
+        // console.log(db)
         console.log('数据库成功连接到：' + dbConf.url)
 
         new Promise((reslove, reject) => {

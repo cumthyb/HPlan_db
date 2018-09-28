@@ -12,7 +12,6 @@ function createRouter(db) {
     router.get('/uptoken',Qiniu().qiniutoken)
 
     const User = UserModel(db)
-
     router.post('/member/register', User.register)
     router.post('/member/login', User.login)
     router.post('/valid', User.valid)
@@ -23,7 +22,6 @@ function createRouter(db) {
     const Series = SeriesModel(db)
     router.post('/course-series/creat', Series.createSeries)
     router.get('/course-series/findAll', Series.getAllSeries)
-
 
     const Course = CourseModel(db)
     router.post('/course/create', Course.createCourse) 
