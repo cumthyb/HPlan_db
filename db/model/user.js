@@ -1,5 +1,6 @@
 import UserSchema from "../schema/user.js";
 import jwt from "jsonwebtoken";
+import jwtConf from '../../config/jwt.conf'
 import SendEmail from '../../utils/email.js'
 
 //  const login=async ctx => {}
@@ -53,7 +54,7 @@ export default function(db) {
                     {
                         name: user.name
                     },
-                    "secret",
+                    jwtConf.key,
                     {
                         expiresIn: 60 * 60 // token到期时间设置
                     }
@@ -72,7 +73,7 @@ export default function(db) {
     const valid = async ctx => {
         const { name, token } = ctx.request.body;
         try {
-            const decoded = jwt.verify(token, "secret");
+            const decoded = jwt.verify(token, jwtConf.key);
             if (decoded.exp <= Date.now() / 1000) {
                 ctx.body = {
                     code: 0,
