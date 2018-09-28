@@ -1,4 +1,5 @@
 import Router from 'koa-router'
+import Qiniu from './qiniu_token.js'
 import UserModel from '../model/user.js'
 import SeriesModel from '../model/series.js'
 import CourseModel from '../model/course.js'
@@ -7,6 +8,9 @@ function createRouter(db) {
     const router = new Router({
         prefix: '/api'
     })
+
+    router.get('/uptoken',Qiniu().qiniutoken)
+
     const User = UserModel(db)
 
     router.post('/member/register', User.register)
