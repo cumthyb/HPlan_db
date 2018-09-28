@@ -7,6 +7,7 @@ import serverConf from './config/server.conf'
 import router from './db/router/index.js'
 
 mongoose.set('useCreateIndex', true)
+mongoose.set('useNewUrlParser', true)
 
 mongoose
     .createConnection(dbConf.url, dbConf.conn_options)

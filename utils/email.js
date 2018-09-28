@@ -8,7 +8,6 @@ export default function sendEmail(subject, text) {
         subject: subject,
         html: `<p>${text}</p><br/>` + mailOptions.html
     })
-    debugger
     transporter.sendMail(option, function(error, info) {
         if (!error) {
             console.log('邮件发送成功，请注意查收！')
