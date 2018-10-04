@@ -5,8 +5,8 @@ var options = {
     scope: conf.Bucket,
     deleteAfterDays: 1,
     returnBody:
-        '{"key":"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}'
-};
+        '{"key":"$(key)","hash":"$(etag)","mimeType":$(mimeType),"fsize":$(fsize),"bucket":"$(bucket)","fname":"$(fname)"}'
+}
 
 var putPolicy = new qiniu.rs.PutPolicy(options);
 var mac = new qiniu.auth.digest.Mac(conf.AccessKey, conf.SecretKey);

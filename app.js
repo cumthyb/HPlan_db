@@ -17,9 +17,15 @@ mongoose
 
         new Promise((reslove, reject) => {
             const app = new koa()
-          
+
             app.use(cors(serverConf))
-                .use(parser())
+                .use(
+                    parser({
+                        formLimit: '5mb',
+                        jsonLimit: '5mb',
+                        textLimit: '5mb'
+                    })
+                )
                 .use(router(db).routes())
             app.listen(3011)
             reslove()

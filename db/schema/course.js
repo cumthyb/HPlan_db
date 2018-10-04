@@ -28,20 +28,20 @@ const CourseSchema = new mongoose.Schema({
         trim: true
     },
     coverimg: {
-        type: String,
-        required: true
+        type: Array,
+        // required: true
     },
     videourl: {
         type: String,
-        required: true
+        // required: true
     },
     audiourl: {
         type: String,
-        required: true
+        // required: true
     },
     publish: {
         type: Boolean,
-        required: true
+        // required: true
     },
     price: {
         type: Number
