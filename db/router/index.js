@@ -9,7 +9,7 @@ function createRouter(db) {
         prefix: '/api'
     })
 
-    router.get('/uptoken',Qiniu().qiniutoken)
+    router.get('/uptoken', Qiniu().qiniutoken)
 
     const User = UserModel(db)
     router.post('/member/register', User.register)
@@ -24,8 +24,9 @@ function createRouter(db) {
     router.get('/course-series/findAll', Series.getAllSeries)
 
     const Course = CourseModel(db)
-    router.post('/course/create', Course.createCourse) 
-    router.post('/course/findAll', Course.getAllCourse) 
+    router.post('/course/create', Course.createCourse)
+    router.get('/course/findAll', Course.getAllCourse)
+    router.get('/course/find', Course.getCourse)
 
     return router
 }

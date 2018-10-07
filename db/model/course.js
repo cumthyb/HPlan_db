@@ -13,7 +13,9 @@ export default function(db) {
             coverimg,
             videourl,
             audiourl,
-            publish
+            publish,
+            price,
+            discount
         } = ctx.request.body
         const course = {
             series,
@@ -22,12 +24,43 @@ export default function(db) {
             coverimg,
             videourl,
             audiourl,
-            publish
+            publish,
+            price,
+            discount
         }
-        await CourseModel(course)
-            .save()
+
+        if (ctx.request.body._id) {
+           
+            await CourseModel.findOneAndUpdate(
+                { _id: ctx.request.body._id },
+                Object.assign({}, course, { utime: new Date() })
+            )
+                .then(data => {
+                    ctx.body = { code: 1, message: 'ok' }
+                })
+                .catch(error => {
+                    console.error(error)
+                    ctx.body = { code: -1, message: error.message }
+                })
+        } else {
+            await CourseModel(course)
+                .save()
+                .then(data => {
+                    ctx.body = { code: 1, message: 'ok' }
+                })
+                .catch(error => {
+                    console.error(error)
+                    ctx.body = { code: -1, message: error.message }
+                })
+        }
+    }
+
+    const getAllCourse = async ctx => {
+        await CourseModel.find()
+            .populate({ path: 'series', select: 'title' })
+            .sort({ ctime: -1 })
             .then(data => {
-                ctx.body = { code: 1, message: 'ok' }
+                ctx.body = { code: 1, data: data, message: 'ok' }
             })
             .catch(error => {
                 console.error(error)
@@ -35,19 +68,17 @@ export default function(db) {
             })
     }
 
-    const getAllCourse = async ctx => {
-        await CourseModel.find()
+    const getCourse = async ctx => {
+        let id = ctx.request.query.id
+        await CourseModel.findById(id)
             .then(data => {
-                let arr = []
-                data.map(item => {
-                    arr.push({ value: item._id, label: item.title })
-                })
-                ctx.body = { code: 1, data: arr, message: 'ok' }
+                ctx.body = { code: 1, data: data, message: 'ok' }
             })
             .catch(error => {
                 console.error(error)
                 ctx.body = { code: -1, message: error.message }
             })
     }
-    return { createCourse, getAllCourse }
+
+    return { createCourse, getAllCourse, getCourse }
 }

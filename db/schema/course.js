@@ -13,9 +13,8 @@ import mongoose from 'mongoose'
 
 const CourseSchema = new mongoose.Schema({
     series: {
-        type: String,
-        required: true,
-        trim: true
+        type: mongoose.Schema.ObjectId,
+        ref: 'Series'
     },
     title: {
         type: String,
@@ -28,19 +27,19 @@ const CourseSchema = new mongoose.Schema({
         trim: true
     },
     coverimg: {
-        type: Array,
+        type: Array
         // required: true
     },
     videourl: {
-        type: String,
+        type: Array
         // required: true
     },
     audiourl: {
-        type: String,
+        type: Array
         // required: true
     },
     publish: {
-        type: Boolean,
+        type: Boolean
         // required: true
     },
     price: {
