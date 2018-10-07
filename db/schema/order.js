@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 
-
 /**
  * 用户模型
  * @param {String} username 用户名
@@ -13,13 +12,6 @@ import mongoose from 'mongoose'
  * */
 
 const OrderSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true,
-        trim: true
-    },
     member: {
         type: String,
         required: true,
@@ -30,12 +22,21 @@ const OrderSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    amount: {
+        type: Number,
+        required: true
+    },
     ctime: {
         type: Date,
         default: Date.now
     },
     paytime: {
         type: Date
+    },
+    paychannel: {
+        type: String,
+        required: true,
+        trim: true
     },
     startdate: {
         type: Date
