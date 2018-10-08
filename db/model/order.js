@@ -6,13 +6,7 @@ export default function(db) {
     var OrderModel = db.model('Order', OrderSchema)
 
     const createOrder = async ctx => {
-        const {
-            member,
-            course,
-            amount,
-            paytime,
-            paychannel
-        } = ctx.request.body
+        const { member, course, amount, paytime, paychannel } = ctx.request.body
         const order = {
             member,
             course,
@@ -20,8 +14,8 @@ export default function(db) {
             paytime,
             paychannel
         }
-      order.startdate = ctx.request.body.validityPeriod[0]
-      order.enddate = ctx.request.body.validityPeriod[0]
+        order.startdate = ctx.request.body.validityPeriod[0]
+        order.enddate = ctx.request.body.validityPeriod[0]
 
         await OrderModel(order)
             .save()
@@ -37,6 +31,8 @@ export default function(db) {
     const getAllOrder = async ctx => {
         await OrderModel.find()
             .sort({ ctime: -1 })
+            .populate({ path: 'member', select: 'alias' })
+            .populate({ path: 'course', select: 'title' })
             .then(data => {
                 ctx.body = { code: 1, data: data, message: 'ok' }
             })

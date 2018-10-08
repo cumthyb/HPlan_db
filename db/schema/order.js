@@ -13,13 +13,13 @@ import mongoose from 'mongoose'
 
 const OrderSchema = new mongoose.Schema({
     member: {
-        type: String,
-        required: true,
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
         trim: true
     },
     course: {
-        type: String,
-        required: true,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Course',
         trim: true
     },
     amount: {
