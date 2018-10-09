@@ -29,6 +29,7 @@ function createRouter(db) {
     router.post('/course/create', Course.createCourse)
     router.get('/course/findAll', Course.getAllCourse)
     router.get('/course/find', Course.getCourse)
+    router.get('/course/findBySeries', Course.getCourseBySeries)
 
     const Order = OrderModel(db)
     router.post('/order/create', Order.createOrder)
