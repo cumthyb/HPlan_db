@@ -4,7 +4,7 @@ import cors from 'koa2-cors'
 import parser from 'koa-bodyparser'
 import dbConf from './config/db2.conf'
 import serverConf from './config/server.conf'
-import router from './db/router/index.js'
+import routes from './db/router/index.js'
 
 mongoose.set('useCreateIndex', true)
 mongoose.set('useNewUrlParser', true)
@@ -17,7 +17,7 @@ mongoose
 
         new Promise((reslove, reject) => {
             const app = new koa()
-
+            let router=routes(db)
             app.use(cors(serverConf))
                 .use(
                     parser({
@@ -26,7 +26,8 @@ mongoose
                         textLimit: '5mb'
                     })
                 )
-                .use(router(db).routes())
+                .use(router.routes())
+                .use(router.allowedMethods())
             app.listen(3011)
             reslove()
         })
