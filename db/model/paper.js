@@ -47,11 +47,13 @@ export default function(db) {
     const paper = { task, member, content };
 
     if (ctx.request.body._id) {
-      await PaperModel.findOneAndUpdate(
+      await PaperModel.update(
         { _id: ctx.request.body._id },
-        Object.assign({}, paper, { modifytime: new Date() })
+        {
+          $inc: { submittimes: 1 },
+          $set: Object.assign({}, paper, { modifytime: new Date() })
+        }
       )
-        .update({ $inc: { submittimes: 1 } })
         .then(data => {
           ctx.body = { code: 1, message: "ok" };
         })
@@ -86,11 +88,13 @@ export default function(db) {
     const paper = { corrector, correctcontent, comment };
 
     if (ctx.request.body._id) {
-      await PaperModel.findOneAndUpdate(
+      await PaperModel.update(
         { _id: ctx.request.body._id },
-        Object.assign({}, paper, { correcttime: new Date() })
+        {
+          $inc: { correcttimes: 1 },
+          $set: Object.assign({}, paper, { correcttime: new Date() })
+        }
       )
-        .update({ $inc: { correcttimes: 1 } })
         .then(data => {
           ctx.body = { code: 1, message: "ok" };
         })

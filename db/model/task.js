@@ -10,7 +10,7 @@ export default function(db) {
     const task = { course, title, desc };
 
     if (ctx.request.body._id) {
-      await TaskModel.findOneAndUpdate(
+      await TaskModel.update(
         { _id: ctx.request.body._id },
         Object.assign({}, task, { utime: new Date() })
       )
@@ -53,6 +53,5 @@ export default function(db) {
       });
   };
 
-  
   return { createTask, getAllTask };
 }
