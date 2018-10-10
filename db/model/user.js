@@ -128,6 +128,8 @@ export default function(db) {
   const userUpdate = async ctx => {
     const { name, alisename, pwd, email, tel, avatar, qq } = ctx.request.body;
     const user = { name, alisename, pwd, email, tel, avatar, qq };
+    const pwd=await encrypt(user.pwd)
+    user.pwd=pwd
     await UserModel.findOneAndUpdate(
       {
         name: name
