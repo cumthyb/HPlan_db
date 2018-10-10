@@ -13,20 +13,15 @@ import mongoose from 'mongoose'
  * */
 
 const PaperSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true,
-        trim: true
-    },
     task: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Task',
         required: true,
         trim: true
     },
     member: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
         required: true,
         trim: true
     },
@@ -39,19 +34,32 @@ const PaperSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    submittimes: {
+        type: Number,
+        default: 1
+    },
+    modifytime:{
+        type: Date,
+        default: Date.now
+    },
     corrector: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+    },
+    correctcontent: {
         type: String,
-        required: true,
         trim: true
     },
     comment: {
         type: String,
-        required: true,
         trim: true
     },
     correcttime: {
         type: Date,
-        required: true
+    },
+    correcttimes: {
+        type: Number,
+        default: 1
     }
 })
 

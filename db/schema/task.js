@@ -13,15 +13,9 @@ import mongoose from 'mongoose'
  * */
 
 const TaskSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true,
-        trim: true
-    },
     course: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Course',
         required: true,
         trim: true
     },
@@ -35,7 +29,7 @@ const TaskSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    utiem: {
+    utime: {
         type: Date
     }
 })

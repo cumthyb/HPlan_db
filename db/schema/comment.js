@@ -13,24 +13,20 @@ import mongoose from 'mongoose'
  * */
 
 const CommentSchema = new mongoose.Schema({
-    id: {
-        type: String,
-        required: true,
-        index: true,
-        unique: true,
-        trim: true
-    },
     course: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Course',
         required: true,
         trim: true
     },
     member: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
         trim: true
     },
     paper: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Paper',
         required: true,
         trim: true
     },
