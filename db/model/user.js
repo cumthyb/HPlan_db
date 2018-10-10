@@ -92,6 +92,9 @@ export default function(db) {
     try {
       const decoded = jwt.verify(token, jwtConf.key);
       if (decoded.exp <= Date.now() / 1000) {
+        ctx.status = 301;
+        // ctx.redirect('/login');
+        ctx.redirect('back', '/login');
         ctx.body = {
           code: 0,
           message: "登录状态已过期，请重新登录"
