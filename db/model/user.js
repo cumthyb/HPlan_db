@@ -66,13 +66,23 @@ export default function(db) {
           }
         );
         user.token = token;
-        await UserModel.update({ name: user.name }, { $set: { token: token } });
-        // user.save();
-        ctx.body = {
-          code: 1,
-          message: "登陆验证成功",
-          data: { name, alias: user.alias, token }
-        };
+        // await UserModel.update({ name: user.name }, { $set: { token: token } });
+        user
+          .save()
+          .then(() => {
+            ctx.body = {
+              code: 1,
+              message: "登陆验证成功",
+              data: { name, alias: user.alias, token }
+            };
+          })
+          .catch(err => {
+            console.error(error);
+            ctx.body = {
+              code: -1,
+              message: error.message
+            };
+          });
       }
     }
   };
