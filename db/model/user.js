@@ -20,6 +20,10 @@ export default function(db) {
       qq,
       avatar
     };
+
+    const pwd=await encrypt(user.pwd)
+    user.pwd=pwd
+
     await UserModel(user)
       .save()
       .then(data => {
