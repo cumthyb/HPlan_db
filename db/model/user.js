@@ -21,8 +21,8 @@ export default function(db) {
       avatar
     };
 
-    const pwd=await encrypt(user.pwd)
-    user.pwd=pwd
+    const pwd = await encrypt(user.pwd);
+    user.pwd = pwd;
 
     await UserModel(user)
       .save()
@@ -66,7 +66,8 @@ export default function(db) {
           }
         );
         user.token = token;
-        await user.save();
+        await UserModel.update({ name: user.name }, { $set: { token: token } });
+        // user.save();
         ctx.body = {
           code: 1,
           message: "登陆验证成功",
@@ -128,8 +129,8 @@ export default function(db) {
   const userUpdate = async ctx => {
     const { name, alisename, pwd, email, tel, avatar, qq } = ctx.request.body;
     const user = { name, alisename, pwd, email, tel, avatar, qq };
-    const pwd=await encrypt(user.pwd)
-    user.pwd=pwd
+    const pwd = await encrypt(user.pwd);
+    user.pwd = pwd;
     await UserModel.findOneAndUpdate(
       {
         name: name
