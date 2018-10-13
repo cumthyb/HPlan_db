@@ -36,7 +36,9 @@ function createRouter(db) {
 
   const Order = OrderModel(db);
   router.post("/order/create", Order.createOrder);
-  router.get("/order/findAll", Order.getAllOrder);
+  router.get('/order/findAll', Order.getAllOrder)
+  router.post('/order/find/course', Order.getUserCourse)
+  
 
   const Task = TaskModel(db);
   router.post("/task/create", Task.createTask);

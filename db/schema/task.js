@@ -30,7 +30,8 @@ const TaskSchema = new mongoose.Schema({
         trim: true
     },
     utime: {
-        type: Date
+        type: Date,
+        default: Date.now
     }
 })
 

@@ -36,16 +36,10 @@ export default function(db) {
 
   const getAllTask = async ctx => {
     await TaskModel.find()
+      .populate({ path: 'course', select: 'title' })
       .then(data => {
-        let arr = [];
-        data.map(item => {
-          arr.push({
-            value: item._id,
-            label: item.title,
-            desc: item.desc
-          });
-        });
-        ctx.body = { code: 1, data: arr, message: "ok" };
+       
+        ctx.body = { code: 1, data: data, message: "ok" };
       })
       .catch(error => {
         console.error(error);
