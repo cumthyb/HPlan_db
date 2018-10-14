@@ -42,7 +42,8 @@ function createRouter(db) {
 
   const Task = TaskModel(db);
   router.post("/task/create", Task.createTask);
-  router.get("/task/findAll", Task.getAllTask);
+  router.get('/task/findAll', Task.getAllTask)
+  router.get('/task/findByCourse', Task.getCourseTask)
 
   const Paper = PaperModel(db);
   router.post("/paper/create", Paper.createPaper);

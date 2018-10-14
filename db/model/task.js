@@ -47,5 +47,20 @@ export default function(db) {
       });
   };
 
-  return { createTask, getAllTask };
+  //获取会员的所有任务
+  const getCourseTask = async ctx => {
+    let courseId=ctx.request.query.course
+    await TaskModel.find({ course: courseId})
+          
+          .then(data => {
+              ctx.body = { code: 1, data: data, message: 'ok' }
+          })
+          .catch(error => {
+              console.error(error)
+              ctx.body = { code: -1, message: error.message }
+          })
+  }
+
+
+  return { createTask, getAllTask, getCourseTask};
 }
