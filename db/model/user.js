@@ -56,13 +56,15 @@ export default function(db) {
                     message: '密码错误'
                 }
             } else {
+                let { _id, name, alia } = user
+                let jwtuser = { _id, name, alia }
                 const token = jwt.sign(
                     {
-                        name: user.name
+                        user: jwtuser
                     },
                     jwtConf.key,
                     {
-                      expiresIn: 60 * 60 // token到期时间设置 单位秒
+                        expiresIn: 60 * 60 // token到期时间设置 单位秒
                         // expiresIn: 2 // token到期时间设置
                     }
                 )
