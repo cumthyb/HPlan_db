@@ -73,6 +73,7 @@ export default function(db) {
                 await user
                     .save()
                     .then(() => {
+                        ctx.cookies.set('jwt', token)
                         ctx.body = {
                             code: 1,
                             message: '登陆验证成功',
