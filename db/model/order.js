@@ -55,20 +55,19 @@ export default function(db) {
     }
 
     const getUserCourse = async ctx => {
-        let userName = ctx.cookies.get('name')
-        let o = 10
-        await OrderModel.find()
-            .populate({ path: 'member', select: '_id name' })
+        
+        let user = ctx.session.user
+     
+        await OrderModel.find({ member: user._id })
             .populate({
                 path: 'course',
                 select: '_id title desc coverimg videourl'
             })
+            .select('course')
             .then(data => {
                 let arr = []
-                data.filter(item => item.member.name === userName).map(item => {
-                    let { _id, title, desc, coverimg, videourl } = item.course
-                    let course = { _id, title, desc, coverimg, videourl }
-                    arr.push(course)
+                data.map(item=>{
+                    arr.push(item.course)
                 })
                 ctx.body = { code: 1, data: arr, message: 'ok' }
             })

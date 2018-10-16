@@ -5,6 +5,7 @@ import parser from 'koa-bodyparser'
 import dbConf from './config/db2.conf'
 import serverConf from './config/server.conf'
 import routes from './db/router/index.js'
+import session from 'koa-session'
 
 mongoose.set('useCreateIndex', true)
 mongoose.set('useNewUrlParser', true)
@@ -17,15 +18,53 @@ mongoose
 
         new Promise((reslove, reject) => {
             const app = new koa()
-            let router=routes(db)
+
+            app.keys = ['some secret hurr'] /*cookie的签名*/
+            const CONFIG = {
+                key: 'koa:sess' /** 默认 */,
+                maxAge: 86400000 /*  cookie的过期时间        【需要修改】  */,
+                overwrite: true /** (boolean) can overwrite or not (default true)    没有效果，默认 */,
+                httpOnly: true /**  true表示只有服务器端可以获取cookie */,
+                signed: true /** 默认 签名 */,
+                rolling: true /** 在每次请求时强行设置 cookie，这将重置 cookie 过期时间（默认：false） 【需要修改】 */,
+                renew: false /** (boolean) renew session when session is nearly expired      【需要修改】*/
+            }
+            app.use(session(CONFIG, app))
+
             app.use(cors(serverConf))
-                .use(
-                    parser({
-                        formLimit: '5mb',
-                        jsonLimit: '5mb',
-                        textLimit: '5mb'
-                    })
-                )
+
+            const unless = [
+                '/api/member/login',
+                '/api/member/register',
+                '/api/course-series/findAll',
+                '/api/course/findBySeries'
+            ]
+
+            //拦截鉴权
+            app.use(function(ctx, next) {
+                if (
+                    !ctx.session.user &&
+                    !unless.includes(ctx.path.split('?')[0])
+                ) {
+                    ctx.status = 301
+                    ctx.body = {
+                        code: -1,
+                        message: '登录状态已过期，请重新登录'
+                    }
+                    return
+                } else {
+                    return next()
+                }
+            })
+
+            let router = routes(db)
+            app.use(
+                parser({
+                    formLimit: '5mb',
+                    jsonLimit: '5mb',
+                    textLimit: '5mb'
+                })
+            )
                 .use(router.routes())
                 .use(router.allowedMethods())
             app.listen(3011)

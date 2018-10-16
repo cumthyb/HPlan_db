@@ -56,8 +56,8 @@ export default function(db) {
                     message: '密码错误'
                 }
             } else {
-                let { _id, name, alia } = user
-                let jwtuser = { _id, name, alia }
+                let { _id, name, alias } = user
+                let jwtuser = { _id, name, alias }
                 const token = jwt.sign(
                     {
                         user: jwtuser
@@ -74,6 +74,7 @@ export default function(db) {
                     .save()
                     .then(() => {
                         ctx.cookies.set('jwt', token)
+                        ctx.session.user = jwtuser;
                         ctx.body = {
                             code: 1,
                             message: '登陆验证成功',
