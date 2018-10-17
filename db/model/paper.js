@@ -83,7 +83,15 @@ export default function(db) {
           ctx.body = { code: -1, message: error.message };
         });
     } else {
-      ctx.body = { code: -1, message: "_id不存在" };
+      await PaperModel(paper)
+        .save()
+        .then(data => {
+          ctx.body = { code: 1, message: "ok" };
+        })
+        .catch(error => {
+          console.error(error);
+          ctx.body = { code: -1, message: error.message };
+        });
     }
   };
 
