@@ -17,7 +17,7 @@ function createRouter(db) {
 
   const User = UserModel(db);
   router.post("/member/register", User.register);
-  router.post('/member/login', User.login)
+  router.post("/member/login", User.login);
   router.post("/valid", User.validToken);
   router.post("/member/info", User.userInfo);
   router.post("/member/update", User.userUpdate);
@@ -36,20 +36,20 @@ function createRouter(db) {
 
   const Order = OrderModel(db);
   router.post("/order/create", Order.createOrder);
-  router.get('/order/findAll', Order.getAllOrder)
-  router.post('/order/find/course', Order.getUserCourse)
-  
+  router.get("/order/findAll", Order.getAllOrder);
+  router.post("/order/find/course", Order.getUserCourse);
 
   const Task = TaskModel(db);
   router.post("/task/create", Task.createTask);
-  router.get('/task/findAll', Task.getAllTask)
-  router.get('/task/findByCourse', Task.getCourseTask)
+  router.get("/task/findAll", Task.getAllTask);
+  router.get("/task/findByCourse", Task.getCourseTask);
 
   const Paper = PaperModel(db);
   router.post("/paper/create", Paper.createPaper);
   router.post("/paper/modify", Paper.modifyPaper);
-  router.get("/paper/findById", Paper.getPaperById);
+  router.get("/paper/findById", Paper.getByPaperId);
   router.get("/paper/findAll", Paper.getAllPaper);
+  router.get(" paper/getByCourse", Paper.getByCourse);
   router.post("/paper/correct", Paper.correctPaper);
 
   const Comment = CommentModel(db);

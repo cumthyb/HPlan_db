@@ -10,8 +10,9 @@ export default function(db) {
   var PaperModel = db.model("Paper", PaperSchema);
 
   const createPaper = async ctx => {
-    const { task, member, content } = ctx.request.body;
-    const paper = { task, member, content };
+    const { task, content } = ctx.request.body;
+    const paper = { task, content };
+    paper.member = ctx.session.user._id;
 
     await PaperModel(paper)
       .save()
@@ -24,10 +25,9 @@ export default function(db) {
       });
   };
 
-  const getPaperById = async ctx => {
+  const getByPaperId = async ctx => {
     if (ctx.request.query.id) {
       await PaperModel.findById(ctx.request.query.id)
-        .populate({ path: "member", select: "alias" })
         .populate({ path: "member", select: "alias" })
         .populate({ path: "task", select: "title" })
         .then(data => {
@@ -42,10 +42,31 @@ export default function(db) {
     }
   };
 
-  const modifyPaper = async ctx => {
-    const { task, member, content } = ctx.request.body;
-    const paper = { task, member, content };
+  const getByCourse = async ctx => {
+    if (ctx.request.query.course) {
+      let param = {
+        course: ctx.request.query.course,
+        member: ctx.session.user._id
+      };
+      await PaperModel.find(param)
+        .populate({ path: "member", select: "alias" })
+        .populate({ path: "task", select: "title desc" })
+        .then(data => {
+          ctx.body = { code: 1, data: data, message: "ok" };
+        })
+        .catch(error => {
+          console.error(error);
+          ctx.body = { code: -1, message: error.message };
+        });
+    } else {
+      ctx.body = { code: -1, message: "_id不存在" };
+    }
+  };
 
+  const modifyPaper = async ctx => {
+    const { task, content } = ctx.request.body;
+    const paper = { task, content };
+    paper.member = ctx.session.user._id;
     if (ctx.request.body._id) {
       await PaperModel.update(
         { _id: ctx.request.body._id },
@@ -71,7 +92,6 @@ export default function(db) {
       "task member submittime modifytime corrector correctime hascorrected"
     )
       .populate({ path: "member", select: "alias" })
-      .populate({ path: "member", select: "alias" })
       .populate({ path: "task", select: "title" })
       .sort({ submittime: -1, modifytime: -1, correcttime: -1 })
       .then(data => {
@@ -84,9 +104,9 @@ export default function(db) {
   };
 
   const correctPaper = async ctx => {
-    const { corrector, correctcontent, comment } = ctx.request.body;
-    const paper = { corrector, correctcontent, comment };
-
+    const { correctcontent, comment } = ctx.request.body;
+    const paper = { correctcontent, comment };
+    paper.corrector = ctx.session.user._id;
     if (ctx.request.body._id) {
       await PaperModel.update(
         { _id: ctx.request.body._id },
@@ -107,5 +127,12 @@ export default function(db) {
     }
   };
 
-  return { createPaper, modifyPaper, getPaperById, getAllPaper, correctPaper };
+  return {
+    createPaper,
+    modifyPaper,
+    getByPaperId,
+    getByCourse,
+    getAllPaper,
+    correctPaper
+  };
 }
