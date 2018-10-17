@@ -19,7 +19,7 @@ mongoose
     new Promise((reslove, reject) => {
       const app = new koa();
 
-      app.keys = ["keys",'secret','hplan']; /*cookie的签名*/
+      app.keys = ["keys", "secret", "hplan"]; /*cookie的签名*/
       const CONFIG = {
         key: "koa:sess" /** 默认 */,
         maxAge: 86400000 /*  cookie的过期时间   单位毫秒     【需要修改】  */,
