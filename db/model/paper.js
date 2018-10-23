@@ -25,7 +25,7 @@ export default function(db) {
             })
     }
 
-    const getByPaperId = async ctx => {
+    const getPaper = async ctx => {
         if (ctx.request.query.id) {
             await PaperModel.findById(ctx.request.query.id)
                 .populate({ path: 'member', select: 'alias' })
@@ -38,7 +38,20 @@ export default function(db) {
                     ctx.body = { code: -1, message: error.message }
                 })
         } else {
-            ctx.body = { code: -1, message: '_id不存在' }
+            await PaperModel.find()
+                .select(
+                    'task member submittime modifytime corrector correctime hascorrected'
+                )
+                .populate({ path: 'member', select: 'alias' })
+                .populate({ path: 'task', select: 'title' })
+                .sort({ submittime: -1, modifytime: -1, correcttime: -1 })
+                .then(data => {
+                    ctx.body = { code: 1, data: data, message: 'ok' }
+                })
+                .catch(error => {
+                    console.error(error)
+                    ctx.body = { code: -1, message: error.message }
+                })
         }
     }
 
@@ -96,9 +109,10 @@ export default function(db) {
     }
 
     const getAllPaper = async ctx => {
-        await PaperModel.find(
-            'task member submittime modifytime corrector correctime hascorrected'
-        )
+        await PaperModel.find()
+            .select(
+                'task member submittime modifytime corrector correctime hascorrected'
+            )
             .populate({ path: 'member', select: 'alias' })
             .populate({ path: 'task', select: 'title' })
             .sort({ submittime: -1, modifytime: -1, correcttime: -1 })
@@ -138,7 +152,7 @@ export default function(db) {
     return {
         createPaper,
         modifyPaper,
-        getByPaperId,
+        getPaper,
         getPaperByTask,
         getAllPaper,
         correctPaper
