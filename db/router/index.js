@@ -49,7 +49,7 @@ function createRouter(db) {
   router.post("/paper/save", Paper.modifyPaper);
   router.get("/paper/findById", Paper.getByPaperId);
   router.get("/paper/findAll", Paper.getAllPaper);
-  router.get("paper/getByCourse", Paper.getByCourse);
+  router.get('/paper/getPaperByTask', Paper.getPaperByTask)
   router.post("/paper/correct", Paper.correctPaper);
 
   const Comment = CommentModel(db);

@@ -59,7 +59,7 @@ const PaperSchema = new mongoose.Schema({
     },
     correcttimes: {
         type: Number,
-        default: 1
+        default: 0
     }
 })
 
