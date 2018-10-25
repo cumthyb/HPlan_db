@@ -40,11 +40,15 @@ export default function(db) {
         } else {
             await PaperModel.find()
                 .select(
-                    'task member submittime modifytime corrector correctime hascorrected'
+                    'task member submittime modifytime corrector correctime correctstate'
                 )
                 .populate({ path: 'member', select: 'alias' })
                 .populate({ path: 'task', select: 'title' })
-                .sort({ submittime: -1, modifytime: -1, correcttime: -1 })
+                .sort({
+                    submittime: -1,
+                    modifytime: -1,
+                    correcttime: -1
+                })
                 .then(data => {
                     ctx.body = { code: 1, data: data, message: 'ok' }
                 })
@@ -53,6 +57,22 @@ export default function(db) {
                     ctx.body = { code: -1, message: error.message }
                 })
         }
+    }
+
+    const getMyPaper = async ctx => {
+        let param = {
+            member: ctx.session.user._id
+        }
+        await PaperModel.find(param)
+            .populate({ path: 'member', select: 'alias' })
+            .populate({ path: 'task', select: 'title desc' })
+            .then(data => {
+                ctx.body = { code: 1, data: data, message: 'ok' }
+            })
+            .catch(error => {
+                console.error(error)
+                ctx.body = { code: -1, message: error.message }
+            })
     }
 
     const getPaperByTask = async ctx => {
@@ -85,7 +105,10 @@ export default function(db) {
                 { _id: ctx.request.body._id },
                 {
                     $inc: { submittimes: 1 },
-                    $set: Object.assign({}, paper, { modifytime: new Date() })
+                    $set: Object.assign({}, paper, {
+                        modifytime: new Date(),
+                        correctstate: false
+                    })
                 }
             )
                 .then(data => {
@@ -96,6 +119,7 @@ export default function(db) {
                     ctx.body = { code: -1, message: error.message }
                 })
         } else {
+            paper.correctstate = false
             await PaperModel(paper)
                 .save()
                 .then(data => {
@@ -111,7 +135,7 @@ export default function(db) {
     const getAllPaper = async ctx => {
         await PaperModel.find()
             .select(
-                'task member submittime modifytime corrector correctime hascorrected'
+                'task member submittime modifytime corrector correctime correctstate'
             )
             .populate({ path: 'member', select: 'alias' })
             .populate({ path: 'task', select: 'title' })
@@ -126,15 +150,18 @@ export default function(db) {
     }
 
     const correctPaper = async ctx => {
-        const { correctcontent, comment } = ctx.request.body
-        const paper = { correctcontent, comment }
+      const { correctcontent, comment, score } = ctx.request.body
+        const paper = { correctcontent, comment,score }
         paper.corrector = ctx.session.user._id
         if (ctx.request.body._id) {
             await PaperModel.update(
                 { _id: ctx.request.body._id },
                 {
                     $inc: { correcttimes: 1 },
-                    $set: Object.assign({}, paper, { correcttime: new Date() })
+                    $set: Object.assign({}, paper, {
+                        correcttime: new Date(),
+                        correctstate: true
+                    })
                 }
             )
                 .then(data => {
@@ -155,6 +182,7 @@ export default function(db) {
         getPaper,
         getPaperByTask,
         getAllPaper,
-        correctPaper
+        correctPaper,
+        getMyPaper
     }
 }

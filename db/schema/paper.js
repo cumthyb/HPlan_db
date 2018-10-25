@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 
-
 /**
  * 用户模型
  * @param {String} username 用户名
@@ -38,13 +37,13 @@ const PaperSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
-    modifytime:{
+    modifytime: {
         type: Date,
         default: Date.now
     },
     corrector: {
         type: mongoose.Schema.ObjectId,
-        ref: 'User',
+        ref: 'User'
     },
     correctcontent: {
         type: String,
@@ -55,11 +54,19 @@ const PaperSchema = new mongoose.Schema({
         trim: true
     },
     correcttime: {
-        type: Date,
+        type: Date
     },
     correcttimes: {
         type: Number,
         default: 0
+    },
+    correctstate: {
+        type: Boolean,
+        default: false
+    },
+    score: {
+        type: Number,
+        default: -1
     }
 })
 
