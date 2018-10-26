@@ -47,11 +47,11 @@ function createRouter(db) {
   const Paper = PaperModel(db);
   router.post("/paper/create", Paper.createPaper);
   router.post("/paper/save", Paper.modifyPaper);
-  router.get('/paper/getPaper', Paper.getPaper)
+  router.get("/paper/getPaper", Paper.getPaper);
   router.get("/paper/findAll", Paper.getAllPaper);
-  router.get('/paper/getPaperByTask', Paper.getPaperByTask)
-  router.post('/paper/correct', Paper.correctPaper)
-  router.get('/paper/getMyPaper', Paper.getMyPaper)
+  router.get("/paper/getPaperByTask", Paper.getPaperByTask);
+  router.post("/paper/correct", Paper.correctPaper);
+  router.get("/paper/getMyPaper", Paper.getMyPaper);
 
   const Comment = CommentModel(db);
   router.post("/comment/create", Comment.createComment);

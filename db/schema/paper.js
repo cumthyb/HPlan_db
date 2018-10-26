@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
 /**
  * 用户模型
@@ -12,62 +12,62 @@ import mongoose from 'mongoose'
  * */
 
 const PaperSchema = new mongoose.Schema({
-    task: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'Task',
-        required: true,
-        trim: true
-    },
-    member: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User',
-        required: true,
-        trim: true
-    },
-    content: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    submittime: {
-        type: Date,
-        default: Date.now
-    },
-    submittimes: {
-        type: Number,
-        default: 1
-    },
-    modifytime: {
-        type: Date,
-        default: Date.now
-    },
-    corrector: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-    },
-    correctcontent: {
-        type: String,
-        trim: true
-    },
-    comment: {
-        type: String,
-        trim: true
-    },
-    correcttime: {
-        type: Date
-    },
-    correcttimes: {
-        type: Number,
-        default: 0
-    },
-    correctstate: {
-        type: Boolean,
-        default: false
-    },
-    score: {
-        type: Number,
-        default: -1
-    }
-})
+  task: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Task",
+    required: true,
+    trim: true
+  },
+  member: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: true,
+    trim: true
+  },
+  content: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  submittime: {
+    type: Date,
+    default: Date.now
+  },
+  submittimes: {
+    type: Number,
+    default: 1
+  },
+  modifytime: {
+    type: Date,
+    default: Date.now
+  },
+  corrector: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User"
+  },
+  correctcontent: {
+    type: String,
+    trim: true
+  },
+  comment: {
+    type: String,
+    trim: true
+  },
+  correcttime: {
+    type: Date
+  },
+  correcttimes: {
+    type: Number,
+    default: 0
+  },
+  correctstate: {
+    type: Boolean,
+    default: false
+  },
+  score: {
+    type: Number,
+    default: -1
+  }
+});
 
-export default PaperSchema
+export default PaperSchema;
