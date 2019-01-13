@@ -44,6 +44,7 @@ mongoose
       app.use(function(ctx, next) {
         console.log("ctx: ",new Date())
         console.log("ctx: ",ctx)
+        console.log("ctx.request.body: ",ctx.request.body)
         if (!ctx.session.user && !unless.includes(ctx.path.split("?")[0])) {
           ctx.status = 401;
           ctx.body = {
