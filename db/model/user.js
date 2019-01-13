@@ -21,8 +21,8 @@ export default function(db) {
             avatar
         }
 
-        const hash = await encrypt(user.pwd)
-        user.pwd = hash
+        // const hash = await encrypt(user.pwd)
+        // user.pwd = hash
 
         await UserModel(user)
             .save()

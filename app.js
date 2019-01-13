@@ -42,6 +42,8 @@ mongoose
 
       //拦截鉴权
       app.use(function(ctx, next) {
+        console.log("ctx: ",new Date())
+        console.log("ctx: ",ctx)
         if (!ctx.session.user && !unless.includes(ctx.path.split("?")[0])) {
           ctx.status = 401;
           ctx.body = {
